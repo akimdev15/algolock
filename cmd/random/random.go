@@ -4,9 +4,11 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package random
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"github.com/akimdev15/algolock/cmd/jsonutils"
+	"github.com/akimdev15/algolock/sql"
 	"github.com/spf13/cobra"
 	"math/rand"
 	"os/exec"
@@ -28,22 +30,22 @@ func init() {
 }
 
 func openRandomQuestion() {
-	questions, err := jsonutils.OpenJsonFile()
+	queries, err := sql.InitDB()
 	if err != nil {
-		fmt.Println("error opening questions file")
+		fmt.Println("Error initializing database. Error: ", err)
 		return
 	}
 
-	pickedQuestion, err := pickRandomQuestion(questions)
+	ctx := context.Background()
+	// Get question name from the url
+	questionURL, err := queries.GetRandomQuestionURL(ctx)
 	if err != nil {
-		fmt.Println("error picking question. error: ", err)
+		fmt.Println("Error getting question URL. Error: ", err)
 		return
 	}
-
-	fmt.Println("Picked Question: ", pickedQuestion)
 
 	// TODO - open the question on a link
-	err = openURL(pickedQuestion.URL)
+	err = openURL(questionURL)
 	if err != nil {
 		fmt.Println("error opening URL")
 	}

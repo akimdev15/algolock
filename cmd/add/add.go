@@ -1,13 +1,18 @@
 package add
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/akimdev15/algolock/cmd/jsonutils"
+	"github.com/akimdev15/algolock/internal/database"
+	"github.com/akimdev15/algolock/sql"
+	"github.com/google/uuid"
 	"github.com/spf13/cobra"
 	"net/url"
 	"os"
 	"strings"
+	"time"
 )
 
 // AddCmd represents the add command
@@ -30,6 +35,13 @@ func init() {
 
 // addNewQuestion - adds new Leetcode question to the jsonutils file
 func addNewQuestion(urlStr string) {
+	queries, err := sql.InitDB()
+	if err != nil {
+		fmt.Println("Error initializing database. Error: ", err)
+		return
+	}
+
+	ctx := context.Background()
 	// Get question name from the url
 	questionName, err := getQuestionNameFromURL(urlStr)
 	if err != nil {
@@ -37,8 +49,19 @@ func addNewQuestion(urlStr string) {
 	}
 	fmt.Println("Question name: " + questionName)
 
-	// Store this as a question
-	addQuestionToJsonFile(questionName, urlStr)
+	question, err := queries.CreateQuestion(ctx, database.CreateQuestionParams{
+		ID:        uuid.New().String(),
+		Name:      questionName,
+		Url:       urlStr,
+		Solved:    "0",
+		UpdatedAt: time.Now().UTC(),
+	})
+	if err != nil {
+		fmt.Println("Error saving question: ", err)
+		return
+	}
+
+	fmt.Println("Successfully saved question: ", question)
 }
 
 func getQuestionNameFromURL(urlStr string) (string, error) {

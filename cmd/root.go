@@ -6,9 +6,8 @@ package cmd
 import (
 	"github.com/akimdev15/algolock/cmd/add"
 	"github.com/akimdev15/algolock/cmd/random"
-	"os"
-
 	"github.com/spf13/cobra"
+	"os"
 )
 
 // rootCmd represents the base command when called without any subcommands
