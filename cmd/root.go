@@ -6,6 +6,7 @@ package cmd
 import (
 	"github.com/akimdev15/algolock/cmd/add"
 	"github.com/akimdev15/algolock/cmd/random"
+	"github.com/akimdev15/algolock/cmd/review"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -33,6 +34,7 @@ func init() {
 	// rootCmd.AddCommand()
 	rootCmd.AddCommand(random.RandomCmd)
 	rootCmd.AddCommand(add.AddCmd)
+	rootCmd.AddCommand(review.ReviewCmd)
 
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

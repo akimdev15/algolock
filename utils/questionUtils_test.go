@@ -1,4 +1,4 @@
-package random
+package utils
 
 import (
 	"github.com/akimdev15/algolock/cmd/jsonutils"
@@ -7,8 +7,8 @@ import (
 
 func TestPickRandomQuestion(t *testing.T) {
 	var emptyQuestions []jsonutils.Question
-	_, err := pickRandomQuestion(emptyQuestions)
-	if err == nil || err.Error() != "no questions found" {
+	_, err := PickRandomIdx(len(emptyQuestions))
+	if err == nil || err.Error() != "provided length is 0" {
 		t.Error("Expected error for empty questions slice, got nil")
 	}
 
@@ -18,18 +18,13 @@ func TestPickRandomQuestion(t *testing.T) {
 		{ID: "003", Name: "Question 3", URL: "https://example.com/question3", Solved: 0},
 	}
 
-	randomQuestion, err := pickRandomQuestion(nonEmptyQuestions)
+	randomIdx, err := PickRandomIdx(len(nonEmptyQuestions))
 	if err != nil {
 		t.Errorf("Unexpected error: %s", err)
 	}
-	found := false
-	for _, question := range nonEmptyQuestions {
-		if question == randomQuestion {
-			found = true
-			break
-		}
+
+	if nonEmptyQuestions[randomIdx].ID == "" {
+		t.Errorf("Expected non empty question ID, got %s", nonEmptyQuestions[randomIdx].ID)
 	}
-	if !found {
-		t.Errorf("Question %v not found", randomQuestion)
-	}
+
 }

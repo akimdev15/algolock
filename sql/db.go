@@ -7,15 +7,19 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func InitDB() (*database.Queries, error) {
+type DbStruct struct {
+	DB      *sql.DB
+	Queries *database.Queries
+}
+
+func InitDB() (DbStruct, error) {
 	db, err := sql.Open("sqlite3", "sql/mydb.db")
 	if err != nil {
 		fmt.Println("Error opening database", err)
-		return nil, err
+		return DbStruct{}, err
 	}
-	//defer db.Close()
 
 	queries := database.New(db)
 
-	return queries, nil
+	return DbStruct{DB: db, Queries: queries}, nil
 }

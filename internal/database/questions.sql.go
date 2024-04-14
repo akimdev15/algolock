@@ -11,17 +11,18 @@ import (
 )
 
 const createQuestion = `-- name: CreateQuestion :one
-INSERT INTO questions (id, name, url, solved, updated_at)
-VALUES ($1, $2, $3, $4, $5)
-RETURNING id, name, url, solved, updated_at
+INSERT INTO questions (id, name, url, solved, difficulty, updated_at)
+VALUES ($1, $2, $3, $4, $5, $6)
+RETURNING id, name, url, solved, difficulty, updated_at
 `
 
 type CreateQuestionParams struct {
-	ID        string
-	Name      string
-	Url       string
-	Solved    string
-	UpdatedAt time.Time
+	ID         string
+	Name       string
+	Url        string
+	Solved     string
+	Difficulty string
+	UpdatedAt  time.Time
 }
 
 func (q *Queries) CreateQuestion(ctx context.Context, arg CreateQuestionParams) (Question, error) {
@@ -30,6 +31,7 @@ func (q *Queries) CreateQuestion(ctx context.Context, arg CreateQuestionParams) 
 		arg.Name,
 		arg.Url,
 		arg.Solved,
+		arg.Difficulty,
 		arg.UpdatedAt,
 	)
 	var i Question
@@ -38,13 +40,14 @@ func (q *Queries) CreateQuestion(ctx context.Context, arg CreateQuestionParams) 
 		&i.Name,
 		&i.Url,
 		&i.Solved,
+		&i.Difficulty,
 		&i.UpdatedAt,
 	)
 	return i, err
 }
 
 const getAllQuestions = `-- name: GetAllQuestions :many
-SELECT id, name, url, solved, updated_at FROM questions
+SELECT id, name, url, solved, difficulty, updated_at FROM questions
 `
 
 func (q *Queries) GetAllQuestions(ctx context.Context) ([]Question, error) {
@@ -61,6 +64,7 @@ func (q *Queries) GetAllQuestions(ctx context.Context) ([]Question, error) {
 			&i.Name,
 			&i.Url,
 			&i.Solved,
+			&i.Difficulty,
 			&i.UpdatedAt,
 		); err != nil {
 			return nil, err

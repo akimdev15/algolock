@@ -9,9 +9,10 @@ import (
 )
 
 type Question struct {
-	ID        string
-	Name      string
-	Url       string
-	Solved    string
-	UpdatedAt time.Time
+	ID         string
+	Name       string
+	Url        string
+	Solved     string
+	Difficulty string
+	UpdatedAt  time.Time
 }

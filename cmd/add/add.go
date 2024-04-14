@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"github.com/akimdev15/algolock/cmd/jsonutils"
 	"github.com/akimdev15/algolock/internal/database"
+	"github.com/akimdev15/algolock/leetcode"
 	"github.com/akimdev15/algolock/sql"
-	"github.com/google/uuid"
 	"github.com/spf13/cobra"
 	"net/url"
 	"os"
@@ -35,11 +35,12 @@ func init() {
 
 // addNewQuestion - adds new Leetcode question to the jsonutils file
 func addNewQuestion(urlStr string) {
-	queries, err := sql.InitDB()
+	dbStruct, err := sql.InitDB()
 	if err != nil {
 		fmt.Println("Error initializing database. Error: ", err)
 		return
 	}
+	defer dbStruct.DB.Close()
 
 	ctx := context.Background()
 	// Get question name from the url
@@ -49,19 +50,28 @@ func addNewQuestion(urlStr string) {
 	}
 	fmt.Println("Question name: " + questionName)
 
-	question, err := queries.CreateQuestion(ctx, database.CreateQuestionParams{
-		ID:        uuid.New().String(),
-		Name:      questionName,
-		Url:       urlStr,
-		Solved:    "0",
-		UpdatedAt: time.Now().UTC(),
+	questionDetail, err := leetcode.GetQuestionDetails(questionName)
+	if err != nil {
+		fmt.Println("Error getting question details. Error: ", err)
+		return
+	}
+
+	question, err := dbStruct.Queries.CreateQuestion(ctx, database.CreateQuestionParams{
+		ID:         questionDetail.QuestionID,
+		Name:       questionName,
+		Url:        urlStr,
+		Solved:     "0",
+		Difficulty: questionDetail.Difficulty,
+		UpdatedAt:  time.Now().UTC(),
 	})
+
 	if err != nil {
 		fmt.Println("Error saving question: ", err)
 		return
 	}
 
 	fmt.Println("Successfully saved question: ", question)
+
 }
 
 func getQuestionNameFromURL(urlStr string) (string, error) {
