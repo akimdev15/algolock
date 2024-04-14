@@ -1,0 +1,24 @@
+# Compiled binary files
+*.exe
+*.out
+
+# Build files
+/build/
+
+# Dependency directories
+/vendor/
+/go.sum
+/go.mod
+
+# IDE and editor files
+.idea/
+.vscode/
+
+# Logs and temporary files
+/log/
+/temp/
+
+# Ignore the data.db file if SQLite is used
+data.db
+
+algolock
