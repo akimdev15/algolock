@@ -1,6 +1,6 @@
 -- name: CreateQuestion :one
-INSERT INTO questions (id, name, url, solved, difficulty, updated_at)
-VALUES ($1, $2, $3, $4, $5, $6)
+INSERT INTO questions (id, name, url, solved, difficulty, updated_at, confidence)
+VALUES ($1, $2, $3, $4, $5, $6, $7)
 RETURNING *;
 
 -- name: GetAllQuestions :many

@@ -63,6 +63,7 @@ func addNewQuestion(urlStr string) {
 		Solved:     "0",
 		Difficulty: questionDetail.Difficulty,
 		UpdatedAt:  time.Now().UTC(),
+		Confidence: "LOW",
 	})
 
 	if err != nil {
@@ -88,7 +89,7 @@ func getQuestionNameFromURL(urlStr string) (string, error) {
 	// Grab the last words = name of the question
 	var lastPart string
 	for i := len(pathParts) - 1; i >= 0; i-- {
-		if pathParts[i] != "" {
+		if pathParts[i] != "" && pathParts[i] != "description" {
 			lastPart = pathParts[i]
 			break
 		}
