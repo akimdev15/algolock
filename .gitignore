@@ -20,7 +20,6 @@
 # Ignore the data.db file if SQLite is used
 data.db
 
-algolock
-
-
 *.db
+
+/internal/
