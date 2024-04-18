@@ -7,14 +7,17 @@ import (
 )
 
 type Question struct {
-	ID     string `json:"id"`
-	Name   string `json:"name"`
-	URL    string `json:"url"`
-	Solved int    `json:"solved"`
+	ID         string `json:"ID"`
+	Name       string `json:"Name"`
+	URL        string `json:"Url"`
+	Solved     string `json:"Solved"`
+	Difficulty string `json:"Difficulty"`
+	UpdatedAt  string `json:"UpdatedAt"`
+	Confidence string `json:"Confidence"`
 }
 
 func OpenJsonFile() ([]Question, error) {
-	file, err := os.Open("cmd/questions.json")
+	file, err := os.Open("sample/sample_questions.json")
 	if err != nil {
 		fmt.Println("open questions.json error:", err)
 		return nil, err

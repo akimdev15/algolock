@@ -106,7 +106,7 @@ func addQuestionToJsonFile(questionName string, urlStr string) error {
 		ID:     "005",
 		Name:   questionName,
 		URL:    urlStr,
-		Solved: 0,
+		Solved: "0",
 	}
 	questions = append(questions, newQuestion)
 

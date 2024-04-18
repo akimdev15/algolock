@@ -47,3 +47,8 @@ func PrintQuestions(questions []database.Question) {
 	}
 	t.Render()
 }
+
+func ConstructLeetcodeURL(titleSlug string) string {
+	questionUrl := "https://leetcode.com/problems/%s/"
+	return fmt.Sprintf(questionUrl, titleSlug)
+}

@@ -7,7 +7,9 @@ import (
 	"fmt"
 	"github.com/akimdev15/leetcode/query"
 	"github.com/akimdev15/leetcode/utils"
+	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"
+	"os"
 )
 
 const QuestionUrl = "https://leetcode.com/problems/%s/"
@@ -18,37 +20,39 @@ var ReviewCmd = &cobra.Command{
 	Short: "review recently solved questions",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			cmd.Usage()
-			return
-		}
-
-		openRandomReviewQuestion(args[0])
+		openRandomReviewQuestion()
 	},
 }
 
 func init() {
 }
 
-func openRandomReviewQuestion(username string) {
+func openRandomReviewQuestion() {
+	err := godotenv.Load(".env")
+	if err != nil {
+		fmt.Println("Error loading .env file")
+		os.Exit(1)
+	}
+	username := os.Getenv("username")
 	if username == "" {
 		fmt.Println("username is empty")
 		return
 	}
 
-	questions, err := query.GetRecentSubmissions(5)
+	fmt.Println("username is", username)
+	submissions, err := query.GetRecentSubmissions(5)
 	if err != nil {
-		fmt.Println("get recently solved questions err:", err)
+		fmt.Println("get recently solved submissions err:", err)
 		return
 	}
 
-	randomIdx, err := utils.PickRandomIdx(len(questions))
+	randomIdx, err := utils.PickRandomIdx(len(submissions))
 	if err != nil {
 		fmt.Println("get random idx err:", err)
 		return
 	}
 
-	questionUrl := fmt.Sprintf(QuestionUrl, questions[randomIdx].TitleSlug)
+	questionUrl := utils.ConstructLeetcodeURL(submissions[randomIdx].TitleSlug)
 
 	err = utils.OpenURL(questionUrl)
 	if err != nil {
