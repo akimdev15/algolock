@@ -3,7 +3,7 @@ package sql
 import (
 	"database/sql"
 	"fmt"
-	"github.com/akimdev15/algolock/internal/database"
+	"github.com/akimdev15/leetcode/internal/database"
 	_ "github.com/mattn/go-sqlite3"
 )
 

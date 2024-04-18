@@ -3,7 +3,10 @@ package utils
 import (
 	"errors"
 	"fmt"
+	"github.com/akimdev15/leetcode/internal/database"
+	"github.com/jedib0t/go-pretty/v6/table"
 	"math/rand"
+	"os"
 	"os/exec"
 	"runtime"
 	"time"
@@ -31,4 +34,16 @@ func OpenURL(url string) error {
 		err = fmt.Errorf("unsupported platform")
 	}
 	return err
+}
+
+// PrintQuestions - prints all the questions using the table library
+func PrintQuestions(questions []database.Question) {
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{"#", "Name", "Difficulty", "Solved", "Confidence"})
+	for _, question := range questions {
+		t.AppendRow([]interface{}{question.ID, question.Name, question.Difficulty, question.Solved, question.Confidence})
+		t.AppendSeparator()
+	}
+	t.Render()
 }

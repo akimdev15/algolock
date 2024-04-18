@@ -22,7 +22,8 @@ data.db
 
 *.db
 
-/internal/
+internal
 .DS_Store
 
-algolock
+leetcode
+.env

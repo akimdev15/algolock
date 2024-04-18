@@ -6,8 +6,8 @@ package random
 import (
 	"context"
 	"fmt"
-	"github.com/akimdev15/algolock/sql"
-	"github.com/akimdev15/algolock/utils"
+	"github.com/akimdev15/leetcode/sql"
+	"github.com/akimdev15/leetcode/utils"
 	"github.com/spf13/cobra"
 )
 

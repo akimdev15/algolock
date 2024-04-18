@@ -5,8 +5,8 @@ package review
 
 import (
 	"fmt"
-	"github.com/akimdev15/algolock/leetcode"
-	"github.com/akimdev15/algolock/utils"
+	"github.com/akimdev15/leetcode/leetcode"
+	"github.com/akimdev15/leetcode/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -36,13 +36,12 @@ func openRandomReviewQuestion(username string) {
 		return
 	}
 
-	questions, err := leetcode.GetRecentlySolvedQuestions(username)
+	questions, err := leetcode.GetRecentSubmissions(5)
 	if err != nil {
 		fmt.Println("get recently solved questions err:", err)
 		return
 	}
 
-	fmt.Println("get recently solved questions:", questions)
 	randomIdx, err := utils.PickRandomIdx(len(questions))
 	if err != nil {
 		fmt.Println("get random idx err:", err)

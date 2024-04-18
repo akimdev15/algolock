@@ -8,3 +8,6 @@ SELECT * FROM questions;
 
 -- name: GetRandomQuestionURL :one
 SELECT url from questions ORDER BY RANDOM() LIMIT 1;
+
+-- name: GetAllQuestionsByIds :many
+SELECT * from questions WHERE id IN (sqlc.slice('ids'));

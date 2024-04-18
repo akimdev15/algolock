@@ -4,8 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/joho/godotenv"
 	"io"
 	"net/http"
+	"os"
 )
 
 const (
@@ -82,7 +84,8 @@ func GetQuestionDetails(questionName string) (Question, error) {
 	return responseData.Data.Question, nil
 }
 
-func GetRecentlySolvedQuestions(username string) ([]Submission, error) {
+func GetRecentSubmissions(limit int) ([]Submission, error) {
+	username := getLeetcodeUsername()
 	query := `
 		query recentAcSubmissions($username: String!, $limit: Int!) {
 		  recentAcSubmissionList(username: $username, limit: $limit) {
@@ -96,7 +99,7 @@ func GetRecentlySolvedQuestions(username string) ([]Submission, error) {
 
 	variables := map[string]interface{}{
 		"username": username,
-		"limit":    7,
+		"limit":    limit,
 	}
 
 	// Send the GraphQL request
@@ -142,4 +145,20 @@ func sendGraphQLRequest(url, query string, variables map[string]interface{}) ([]
 	}
 
 	return responseBody, nil
+}
+
+func getLeetcodeUsername() string {
+	err := godotenv.Load(".env")
+	if err != nil {
+		fmt.Println("Error loading .env file")
+		os.Exit(1)
+	}
+
+	username := os.Getenv("username")
+	if username == "" {
+		fmt.Println("Username not set. Please run the command setup.")
+		os.Exit(1)
+	}
+
+	return username
 }

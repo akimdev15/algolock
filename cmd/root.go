@@ -4,16 +4,18 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"github.com/akimdev15/algolock/cmd/add"
-	"github.com/akimdev15/algolock/cmd/random"
-	"github.com/akimdev15/algolock/cmd/review"
+	"github.com/akimdev15/leetcode/cmd/add"
+	"github.com/akimdev15/leetcode/cmd/get"
+	"github.com/akimdev15/leetcode/cmd/random"
+	"github.com/akimdev15/leetcode/cmd/review"
+	"github.com/akimdev15/leetcode/cmd/setup"
 	"github.com/spf13/cobra"
 	"os"
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "algolock",
+	Use:   "leetcode",
 	Short: "",
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
@@ -35,6 +37,8 @@ func init() {
 	rootCmd.AddCommand(random.RandomCmd)
 	rootCmd.AddCommand(add.AddCmd)
 	rootCmd.AddCommand(review.ReviewCmd)
+	rootCmd.AddCommand(get.GetCmd)
+	rootCmd.AddCommand(setup.Setup)
 
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

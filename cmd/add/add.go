@@ -4,10 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/akimdev15/algolock/cmd/jsonutils"
-	"github.com/akimdev15/algolock/internal/database"
-	"github.com/akimdev15/algolock/leetcode"
-	"github.com/akimdev15/algolock/sql"
+	"github.com/akimdev15/leetcode/cmd/jsonutils"
+	"github.com/akimdev15/leetcode/internal/database"
+	"github.com/akimdev15/leetcode/leetcode"
+	"github.com/akimdev15/leetcode/sql"
 	"github.com/spf13/cobra"
 	"net/url"
 	"os"
@@ -58,7 +58,7 @@ func addNewQuestion(urlStr string) {
 
 	question, err := dbStruct.Queries.CreateQuestion(ctx, database.CreateQuestionParams{
 		ID:         questionDetail.QuestionID,
-		Name:       questionName,
+		Name:       questionDetail.Title,
 		Url:        urlStr,
 		Solved:     "0",
 		Difficulty: questionDetail.Difficulty,

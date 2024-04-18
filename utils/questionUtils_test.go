@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"github.com/akimdev15/algolock/cmd/jsonutils"
+	"github.com/akimdev15/leetcode/cmd/jsonutils"
 	"testing"
 )
 
