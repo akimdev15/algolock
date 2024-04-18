@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/akimdev15/leetcode/cmd/jsonutils"
 	"github.com/akimdev15/leetcode/internal/database"
-	"github.com/akimdev15/leetcode/leetcode"
+	"github.com/akimdev15/leetcode/query"
 	"github.com/akimdev15/leetcode/sql"
 	"github.com/spf13/cobra"
 	"net/url"
@@ -50,7 +50,7 @@ func addNewQuestion(urlStr string) {
 	}
 	fmt.Println("Question name: " + questionName)
 
-	questionDetail, err := leetcode.GetQuestionDetails(questionName)
+	questionDetail, err := query.GetQuestionDetails(questionName)
 	if err != nil {
 		fmt.Println("Error getting question details. Error: ", err)
 		return

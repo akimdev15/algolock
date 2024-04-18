@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/akimdev15/leetcode/internal/database"
-	"github.com/akimdev15/leetcode/leetcode"
+	"github.com/akimdev15/leetcode/query"
 	"github.com/akimdev15/leetcode/sql"
 	"github.com/akimdev15/leetcode/utils"
 	"github.com/spf13/cobra"
@@ -71,7 +71,7 @@ func getRecentQuestions(questionCount int) []database.Question {
 	ctx := context.Background()
 
 	// Get n questions solved from leetcode
-	submissions, err := leetcode.GetRecentSubmissions(questionCount)
+	submissions, err := query.GetRecentSubmissions(questionCount)
 	if err != nil {
 		fmt.Println("Error fetching questions. Error: ", err)
 		return nil
@@ -83,7 +83,7 @@ func getRecentQuestions(questionCount int) []database.Question {
 }
 
 // getQuestionsBySolvedIds - Get questions from db by all the solved leetcode question's ID
-func getQuestionsBySolvedIds(questions []leetcode.Submission, ctx context.Context, dbStruct sql.DbStruct) []database.Question {
+func getQuestionsBySolvedIds(questions []query.Submission, ctx context.Context, dbStruct sql.DbStruct) []database.Question {
 	ids := make([]string, 0)
 	for _, questionID := range questions {
 		ids = append(ids, questionID.ID)

@@ -1,4 +1,4 @@
-package leetcode
+package query
 
 import (
 	"bytes"

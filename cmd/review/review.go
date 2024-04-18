@@ -5,7 +5,7 @@ package review
 
 import (
 	"fmt"
-	"github.com/akimdev15/leetcode/leetcode"
+	"github.com/akimdev15/leetcode/query"
 	"github.com/akimdev15/leetcode/utils"
 	"github.com/spf13/cobra"
 )
@@ -36,7 +36,7 @@ func openRandomReviewQuestion(username string) {
 		return
 	}
 
-	questions, err := leetcode.GetRecentSubmissions(5)
+	questions, err := query.GetRecentSubmissions(5)
 	if err != nil {
 		fmt.Println("get recently solved questions err:", err)
 		return
