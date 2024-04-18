@@ -27,16 +27,16 @@ var PullCmd = &cobra.Command{
 }
 
 func init() {
-	PullCmd.Flags().IntVarP(&count, "count", "c", 0, "how many times to pull all the questions")
-	err := PullCmd.MarkFlagRequired("count")
-	if err != nil {
-		return
-	}
+	PullCmd.Flags().IntVarP(&count, "count", "c", 0, "how many recent submissions to pull")
 }
 
 // pullRecentlySolvedQuestions - pulls all the recently solved questions and adds them to the list
 func pullRecentlySolvedQuestions(limit int) {
-	submissions, err := query.GetRecentSubmissions(count)
+	if limit == 0 {
+		limit = 10
+		fmt.Printf("Using default value to pull recent submissions: %d\n", limit)
+	}
+	submissions, err := query.GetRecentSubmissions(limit)
 	if err != nil {
 		fmt.Println("get recently solved submissions err:", err)
 		return
@@ -51,6 +51,8 @@ func pullRecentlySolvedQuestions(limit int) {
 
 	ctx := context.Background()
 
+	var savedQuestions int
+	var skippedQuestions int
 	for _, submission := range submissions {
 		questionDetail, err := query.GetQuestionDetails(submission.TitleSlug)
 		if err != nil {
@@ -59,7 +61,7 @@ func pullRecentlySolvedQuestions(limit int) {
 		}
 
 		// Create new question
-		question, err := dbStruct.Queries.CreateQuestion(ctx, database.CreateQuestionParams{
+		_, err = dbStruct.Queries.CreateQuestion(ctx, database.CreateQuestionParams{
 			ID:         questionDetail.QuestionID,
 			Name:       submission.Title,
 			Url:        utils.ConstructLeetcodeURL(submission.TitleSlug),
@@ -69,8 +71,11 @@ func pullRecentlySolvedQuestions(limit int) {
 			Confidence: "LOW",
 		})
 		if err != nil {
-			fmt.Printf("create question err: %v for question %v\n:", err, question)
+			skippedQuestions++
+		} else {
+			savedQuestions++
 		}
 	}
 
+	fmt.Printf("Saved questions: %d\nSkipped Questions: %d\n", savedQuestions, skippedQuestions)
 }
