@@ -70,30 +70,29 @@ func getRecentQuestions(questionCount int) []database.Question {
 
 	ctx := context.Background()
 
+	recentQuestions := make([]database.Question, 0)
+
 	// Get n questions solved from leetcode
 	submissions, err := query.GetRecentSubmissions(questionCount)
-	if err != nil {
-		fmt.Println("Error fetching questions. Error: ", err)
-		return nil
+
+	// Create a map for quick lookup of submission IDs
+	submissionMap := make(map[string]struct{}, len(submissions))
+	for _, submission := range submissions {
+		submissionMap[submission.Title] = struct{}{}
 	}
 
-	// Convert the data to questions
-	questions := getQuestionsBySolvedIds(submissions, ctx, dbStruct)
-	return questions
-}
-
-// getQuestionsBySolvedIds - Get questions from db by all the solved leetcode question's ID
-func getQuestionsBySolvedIds(questions []query.Submission, ctx context.Context, dbStruct sql.DbStruct) []database.Question {
-	ids := make([]string, 0)
-	for _, questionID := range questions {
-		ids = append(ids, questionID.ID)
-	}
-
-	databaseQuestions, err := dbStruct.Queries.GetAllQuestionsByIds(ctx, ids)
+	allQuestions, err := dbStruct.Queries.GetAllQuestions(ctx)
 	if err != nil {
-		fmt.Println("Error fetching questions. Error: ", err)
+		fmt.Println("Error fetching latest questions. Error: ", err)
 		os.Exit(1)
 	}
 
-	return databaseQuestions
+	for _, q := range allQuestions {
+		_, exists := submissionMap[q.Name]
+		if exists && len(recentQuestions) < questionCount {
+			recentQuestions = append(recentQuestions, q)
+		}
+	}
+
+	return recentQuestions
 }

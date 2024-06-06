@@ -11,3 +11,12 @@ SELECT url from questions ORDER BY RANDOM() LIMIT 1;
 
 -- name: GetAllQuestionsByIds :many
 SELECT * from questions WHERE id IN (sqlc.slice('ids'));
+
+-- name: GetLatestQuestions :many
+SELECT * FROM questions ORDER BY updated_at DESC LIMIT $1;
+
+-- name: DeleteQuestionById :exec
+DELETE FROM questions WHERE id = $1;
+
+-- name: DeleteQuestionByURL :exec
+DELETE FROM questions WHERE url = $1;

@@ -12,8 +12,6 @@ import (
 	"os"
 )
 
-const QuestionUrl = "https://leetcode.com/problems/%s/"
-
 // ReviewCmd represents the review command
 var ReviewCmd = &cobra.Command{
 	Use:   "review",

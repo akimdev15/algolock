@@ -13,9 +13,9 @@ func TestPickRandomQuestion(t *testing.T) {
 	}
 
 	nonEmptyQuestions := []jsonutils.Question{
-		{ID: "001", Name: "Question 1", URL: "https://example.com/question1", Solved: 0},
-		{ID: "002", Name: "Question 2", URL: "https://example.com/question2", Solved: 0},
-		{ID: "003", Name: "Question 3", URL: "https://example.com/question3", Solved: 0},
+		{ID: "001", Name: "Question 1", URL: "https://example.com/question1", Solved: "0"},
+		{ID: "002", Name: "Question 2", URL: "https://example.com/question2", Solved: "0"},
+		{ID: "003", Name: "Question 3", URL: "https://example.com/question3", Solved: "0"},
 	}
 
 	randomIdx, err := PickRandomIdx(len(nonEmptyQuestions))

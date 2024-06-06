@@ -8,6 +8,7 @@ import (
 	"github.com/akimdev15/leetcode/cmd/get"
 	"github.com/akimdev15/leetcode/cmd/pull"
 	"github.com/akimdev15/leetcode/cmd/random"
+	"github.com/akimdev15/leetcode/cmd/remove"
 	"github.com/akimdev15/leetcode/cmd/review"
 	"github.com/akimdev15/leetcode/cmd/sample"
 	"github.com/akimdev15/leetcode/cmd/setup"
@@ -45,6 +46,7 @@ func init() {
 	rootCmd.AddCommand(setup.Setup)
 	rootCmd.AddCommand(pull.PullCmd)
 	rootCmd.AddCommand(sample.SampleCmd)
+	rootCmd.AddCommand(remove.RemoveCmd)
 
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
