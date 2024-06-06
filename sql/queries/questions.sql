@@ -6,6 +6,9 @@ RETURNING *;
 -- name: GetAllQuestions :many
 SELECT * FROM questions;
 
+-- name: GetQuestionUrlByQuestionNum :one
+SELECT url from questions WHERE id = $1;
+
 -- name: GetRandomQuestionURL :one
 SELECT url from questions ORDER BY RANDOM() LIMIT 1;
 
@@ -20,3 +23,4 @@ DELETE FROM questions WHERE id = $1;
 
 -- name: DeleteQuestionByURL :exec
 DELETE FROM questions WHERE url = $1;
+
